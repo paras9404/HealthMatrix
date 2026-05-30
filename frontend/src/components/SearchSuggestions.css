@@ -1,0 +1,73 @@
+.suggest {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  z-index: 60;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+.suggest-item {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%;
+  padding: 10px 14px;
+  text-align: left;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  transition: background 80ms var(--ease);
+}
+.suggest-item:hover,
+.suggest-item-active { background: var(--color-surface-alt); }
+.suggest-item mark {
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  font-weight: 700;
+  padding: 0 2px;
+  border-radius: 3px;
+}
+.suggest-icon { font-size: 22px; flex-shrink: 0; }
+.suggest-thumb {
+  width: 36px; height: 36px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  object-fit: contain;
+  background: var(--color-surface-alt);
+}
+.suggest-text { flex: 1; min-width: 0; }
+.suggest-text strong {
+  display: block; font-size: 14px; font-weight: 600;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.suggest-text > span {
+  display: block; font-size: 12px; color: var(--color-muted);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.suggest-score { font-weight: 700; font-size: 16px; }
+.suggest-all {
+  display: block; width: 100%;
+  padding: 10px 14px;
+  background: var(--color-surface-alt);
+  font-size: 13px; font-weight: 600; color: var(--color-primary);
+  text-align: left;
+}
+.suggest-all:hover { background: var(--color-primary-soft); }
+
+/* Hero variant: the hero search input is taller (40px+ height) and lives in
+ * a card with its own border, so the dropdown should hug the bottom of the
+ * card rather than floating with a gap. */
+.suggest-hero {
+  top: calc(100% + 4px);
+}
+
+@media (max-width: 480px) {
+  .suggest-item { padding: 12px 14px; gap: 10px; }
+  .suggest-text strong { font-size: 13.5px; }
+  .suggest-text > span { font-size: 11.5px; }
+  .suggest-thumb { width: 32px; height: 32px; }
+  .suggest-score { font-size: 14px; }
+}

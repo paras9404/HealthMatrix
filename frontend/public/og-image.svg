@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F766E"/>
+      <stop offset="100%" stop-color="#134E4A"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#5EEAD4"/>
+      <stop offset="100%" stop-color="#0F766E"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="20" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Decorative rings -->
+  <g opacity="0.12" stroke="#5EEAD4" stroke-width="2" fill="none">
+    <circle cx="1050" cy="120" r="80"/>
+    <circle cx="1050" cy="120" r="140"/>
+    <circle cx="1050" cy="120" r="200"/>
+    <circle cx="100" cy="540" r="60"/>
+    <circle cx="100" cy="540" r="110"/>
+  </g>
+
+  <!-- Logo mark -->
+  <g transform="translate(80, 80)" filter="url(#glow)">
+    <circle cx="40" cy="40" r="36" fill="#5EEAD4" opacity="0.2"/>
+    <path d="M20 40 L34 26 L48 40 L62 26" stroke="#5EEAD4" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+  <text x="160" y="100" font-family="-apple-system, 'Plus Jakarta Sans', sans-serif" font-size="32" font-weight="800" fill="#5EEAD4" letter-spacing="0.5">HealthMatrix</text>
+
+  <!-- Headline -->
+  <text x="80" y="270" font-family="-apple-system, 'Plus Jakarta Sans', sans-serif" font-size="58" font-weight="800" fill="white">Compare supplement quality</text>
+  <text x="80" y="335" font-family="-apple-system, 'Plus Jakarta Sans', sans-serif" font-size="58" font-weight="800" fill="white">across <tspan fill="#5EEAD4">9 trusted labs</tspan>.</text>
+
+  <!-- Subhead -->
+  <text x="80" y="395" font-family="-apple-system, Inter, sans-serif" font-size="28" font-weight="500" fill="#A7F3D0">One aggregate score · Zero guesswork</text>
+
+  <!-- Lab pills -->
+  <g font-family="-apple-system, Inter, sans-serif" font-size="20" font-weight="600" fill="white">
+    <g transform="translate(80, 470)">
+      <rect width="150" height="44" rx="22" fill="white" fill-opacity="0.12" stroke="white" stroke-opacity="0.2"/>
+      <text x="75" y="29" text-anchor="middle">Labdoor</text>
+    </g>
+    <g transform="translate(245, 470)">
+      <rect width="180" height="44" rx="22" fill="white" fill-opacity="0.12" stroke="white" stroke-opacity="0.2"/>
+      <text x="90" y="29" text-anchor="middle">ConsumerLab</text>
+    </g>
+    <g transform="translate(440, 470)">
+      <rect width="100" height="44" rx="22" fill="white" fill-opacity="0.12" stroke="white" stroke-opacity="0.2"/>
+      <text x="50" y="29" text-anchor="middle">NSF</text>
+    </g>
+    <g transform="translate(555, 470)">
+      <rect width="100" height="44" rx="22" fill="white" fill-opacity="0.12" stroke="white" stroke-opacity="0.2"/>
+      <text x="50" y="29" text-anchor="middle">USP</text>
+    </g>
+    <g transform="translate(670, 470)">
+      <rect width="170" height="44" rx="22" fill="white" fill-opacity="0.12" stroke="white" stroke-opacity="0.2"/>
+      <text x="85" y="29" text-anchor="middle">Examine.com</text>
+    </g>
+    <g transform="translate(855, 470)">
+      <rect width="135" height="44" rx="22" fill="white" fill-opacity="0.12" stroke="white" stroke-opacity="0.2"/>
+      <text x="67" y="29" text-anchor="middle">+ 4 more</text>
+    </g>
+  </g>
+
+  <!-- Score ring -->
+  <g transform="translate(1030, 250)">
+    <circle cx="0" cy="0" r="110" fill="white" fill-opacity="0.05" stroke="white" stroke-opacity="0.1" stroke-width="2"/>
+    <circle cx="0" cy="0" r="90" fill="none" stroke="white" stroke-opacity="0.18" stroke-width="12"/>
+    <circle cx="0" cy="0" r="90" fill="none" stroke="url(#ring)" stroke-width="12" stroke-linecap="round" stroke-dasharray="509" stroke-dashoffset="71" transform="rotate(-90)"/>
+    <text x="0" y="-4" text-anchor="middle" font-family="-apple-system, 'Plus Jakarta Sans', sans-serif" font-size="56" font-weight="800" fill="white">94</text>
+    <text x="0" y="28" text-anchor="middle" font-family="-apple-system, Inter, sans-serif" font-size="18" font-weight="600" fill="#A7F3D0">A grade</text>
+  </g>
+
+  <!-- URL -->
+  <text x="80" y="585" font-family="-apple-system, Inter, sans-serif" font-size="22" font-weight="600" fill="#A7F3D0" opacity="0.85">healthmatrix.com</text>
+</svg>

@@ -1,0 +1,27 @@
+{
+  "name": "HealthMatrix — Compare Supplement Ratings",
+  "short_name": "HealthMatrix",
+  "description": "Compare supplement quality ratings from 9 independent labs in one place.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#0F766E",
+  "lang": "en-US",
+  "categories": ["health", "shopping", "lifestyle"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "180x180",
+      "purpose": "any"
+    }
+  ]
+}

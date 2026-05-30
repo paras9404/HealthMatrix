@@ -1,0 +1,27 @@
+# Python
+backend/venv/
+**/__pycache__/
+**/*.pyc
+backend/.env
+backend/*.db
+backend/instance/
+.pytest_cache/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+
+# Meilisearch data
+backend/.meilisearch/
+
+# Claude / graphify (local tooling)
+.claude/
+graphify-out/
+
+# OS / editors
+.DS_Store
+*.log
+.vscode/
+.idea/

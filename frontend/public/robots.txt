@@ -1,0 +1,110 @@
+# HealthMatrix — robots policy
+# Allow reputable crawlers to index public pages.
+# Block admin + filter/sort permutations to avoid duplicate-content waste.
+# Per-page meta robots tags handle finer-grained noindex (search results, paginated pages).
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+Disallow: /compare
+Disallow: /*?sort=
+Disallow: /*?page=
+Disallow: /*&sort=
+Disallow: /*&page=
+
+# Slow down poorly-behaved scrapers (Googlebot/Bingbot ignore Crawl-delay — that's fine).
+Crawl-delay: 1
+
+# Major search engines — explicit allow + no crawl delay.
+User-agent: Googlebot
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+Disallow: /compare
+
+User-agent: Googlebot-Image
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+Disallow: /compare
+
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# Reputable AI search crawlers — allowed so HealthMatrix can be cited as a source
+# in AI Overviews / ChatGPT / Perplexity / Claude answers.
+User-agent: GPTBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+User-agent: Applebot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# Aggressive scrapers — block.
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+Sitemap: https://healthmatrix.com/sitemap.xml

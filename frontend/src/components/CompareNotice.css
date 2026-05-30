@@ -1,0 +1,49 @@
+.compare-notice {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: calc(100% - 32px);
+  padding: 10px 14px;
+  background: var(--color-warning-soft);
+  color: #92400E;
+  border: 1px solid var(--color-warning);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  font-size: 14px;
+  line-height: 1.4;
+  animation: noticeIn 220ms var(--ease);
+}
+
+@keyframes noticeIn {
+  from { transform: translate(-50%, -16px); opacity: 0; }
+  to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+.compare-notice-msg {
+  font-weight: 500;
+}
+
+.compare-notice-close {
+  color: inherit;
+  font-size: 18px;
+  line-height: 1;
+  padding: 0 4px;
+  opacity: 0.7;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.compare-notice-close:hover { opacity: 1; }
+
+@media (max-width: 640px) {
+  .compare-notice {
+    top: 72px;
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+}

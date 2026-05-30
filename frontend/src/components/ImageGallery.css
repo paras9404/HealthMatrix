@@ -1,0 +1,410 @@
+/* ============================================================
+   Amazon-style image gallery
+   - Vertical thumbs on left
+   - Larger main stage with hover-magnifier
+   - Click to open lightbox with pan/zoom
+   ============================================================ */
+
+.gallery-amazon {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 12px;
+  align-items: start;
+  position: relative;
+  width: 100%;
+}
+
+/* Single-image products: collapse the thumbnails column so the stage takes full width */
+.gallery-amazon.gallery-no-thumbs {
+  grid-template-columns: 1fr;
+}
+
+.gallery-thumbs-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 480px;
+  overflow-y: auto;
+  padding: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(15, 23, 42, 0.2) transparent;
+}
+
+.gallery-thumbs-vertical::-webkit-scrollbar { width: 6px; }
+.gallery-thumbs-vertical::-webkit-scrollbar-thumb { background: rgba(15, 23, 42, 0.2); border-radius: 3px; }
+
+.gallery-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  border: 2px solid var(--color-border, #e2e8f0);
+  background: white;
+  cursor: pointer;
+  padding: 3px;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.gallery-thumb:hover {
+  border-color: var(--color-primary, #0F766E);
+}
+
+.gallery-thumb.active {
+  border-color: var(--color-primary, #0F766E);
+  box-shadow: 0 0 0 1px var(--color-primary, #0F766E);
+}
+
+.gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.gallery-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  border: 1px solid var(--color-border, #e2e8f0);
+  outline: none;
+  user-select: none;
+  cursor: zoom-in;
+}
+
+.gallery-stage:focus-visible {
+  border-color: var(--color-primary, #0F766E);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary, #0F766E) 25%, transparent);
+}
+
+.gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 16px;
+  display: block;
+  animation: gallery-fade 0.2s ease-out;
+  transition: opacity 0.15s ease;
+}
+
+.gallery-stage:hover .gallery-img {
+  opacity: 0.95;
+}
+
+@keyframes gallery-fade {
+  from { opacity: 0; transform: scale(0.98); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.gallery-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  color: var(--color-muted, #94a3b8);
+  cursor: default;
+}
+
+.gallery-type-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(15, 23, 42, 0.82);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 5px 10px;
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Expand-fullscreen icon button */
+.gallery-expand-hint {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--color-text, #0f172a);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
+  transition: background 0.15s ease, transform 0.15s ease;
+  z-index: 3;
+}
+.gallery-expand-hint:hover {
+  background: white;
+  transform: scale(1.08);
+}
+
+.gallery-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--color-text, #0f172a);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
+  transition: background 0.15s ease, transform 0.15s ease;
+  z-index: 3;
+  opacity: 0;
+}
+
+.gallery-stage:hover .gallery-arrow { opacity: 1; }
+
+.gallery-arrow:hover {
+  background: white;
+  transform: translateY(-50%) scale(1.06);
+}
+
+.gallery-arrow-prev { left: 12px; }
+.gallery-arrow-next { right: 12px; }
+
+/* Hover magnifier — lens dimensions are set inline so they always match the
+   region the right-hand zoom panel is showing. */
+.gallery-lens {
+  position: absolute;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+  z-index: 4;
+}
+
+/* Right-hand zoom panel — only visible on desktop while hovering.
+   Square aspect-ratio is required so a square lens area on the small image
+   maps to a square (un-distorted) region in the panel. */
+.gallery-zoom-panel {
+  position: absolute;
+  top: 0;
+  left: calc(100% + 16px);
+  width: 460px;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: 12px;
+  background: white;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.18);
+  z-index: 50;
+  pointer-events: none;
+}
+
+.gallery-zoom-img {
+  width: 100%;
+  height: 100%;
+  /* background-size set inline per-image (depends on the image's aspect ratio
+     so the lens area exactly fills the panel without distortion). */
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 1100px) {
+  .gallery-zoom-panel { display: none; }
+}
+
+@media (max-width: 640px) {
+  .gallery-amazon {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .gallery-thumbs-vertical {
+    flex-direction: row;
+    max-height: none;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    order: 2;
+  }
+  .gallery-stage { order: 1; }
+  .gallery-arrow { opacity: 1; width: 34px; height: 34px; }
+  .gallery-thumb { width: 52px; height: 52px; }
+  .gallery-lens { display: none; }
+}
+
+/* ============================================================
+   Lightbox / Fullscreen viewer
+   ============================================================ */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 12, 24, 0.94);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: lb-fade 0.18s ease-out;
+}
+
+@keyframes lb-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+  z-index: 2;
+}
+.lightbox-close:hover { background: rgba(255, 255, 255, 0.22); }
+
+.lightbox-counter {
+  position: absolute;
+  top: 22px;
+  left: 24px;
+  color: rgba(255, 255, 255, 0.85);
+  font-variant-numeric: tabular-nums;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+.lightbox-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, transform 0.15s ease;
+  z-index: 2;
+}
+.lightbox-arrow:hover { background: rgba(255, 255, 255, 0.22); transform: translateY(-50%) scale(1.06); }
+.lightbox-arrow-prev { left: 24px; }
+.lightbox-arrow-next { right: 24px; }
+
+.lightbox-stage {
+  position: relative;
+  width: min(92vw, 1100px);
+  height: min(78vh, 800px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.lightbox-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: transform 0.12s ease-out;
+  transform-origin: center center;
+}
+
+.lightbox-thumbs {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 8px;
+  border-radius: 12px;
+  max-width: calc(100vw - 48px);
+  overflow-x: auto;
+}
+
+.lightbox-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  padding: 3px;
+  flex-shrink: 0;
+  transition: border-color 0.15s ease;
+}
+.lightbox-thumb:hover { border-color: rgba(255, 255, 255, 0.45); }
+.lightbox-thumb.active { border-color: white; }
+.lightbox-thumb img { width: 100%; height: 100%; object-fit: contain; }
+
+.lightbox-zoom-controls {
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  padding: 4px 6px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.lightbox-zoom-controls button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lightbox-zoom-controls button:hover { background: rgba(255, 255, 255, 0.15); }
+.lightbox-zoom-controls span { padding: 0 8px; min-width: 56px; text-align: center; }
+
+@media (max-width: 640px) {
+  .lightbox-arrow { width: 44px; height: 44px; font-size: 1.6rem; }
+  .lightbox-arrow-prev { left: 8px; }
+  .lightbox-arrow-next { right: 8px; }
+  .lightbox-stage { width: 96vw; height: 70vh; }
+  .lightbox-thumbs { bottom: 8px; padding: 6px; }
+  .lightbox-thumb { width: 44px; height: 44px; }
+}

@@ -1,0 +1,59 @@
+.lab-logo {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 12px 14px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: all .18s var(--ease);
+  text-align: left;
+}
+.lab-logo:hover {
+  border-color: var(--lab-color);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--lab-color) 18%, transparent);
+  transform: translateY(-2px);
+}
+.lab-mark {
+  width: 36px; height: 36px;
+  background: var(--lab-color);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 800; font-size: 12px;
+  flex-shrink: 0;
+  position: relative;
+}
+.lab-mark span { position: relative; z-index: 1; line-height: 1; }
+.lab-mark-img {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+  background: white;
+  border-radius: 4px;
+  padding: 2px;
+  position: relative;
+  z-index: 1;
+}
+.lab-circle { border-radius: 50%; }
+.lab-square { border-radius: 6px; }
+.lab-shield { border-radius: 6px 6px 18px 18px / 6px 6px 22px 22px; }
+.lab-hex {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  border-radius: 0;
+}
+.lab-beaker { border-radius: 4px 4px 12px 12px; position: relative; }
+.lab-beaker::after {
+  content: ''; position: absolute; top: -3px; left: 6px; right: 6px; height: 4px;
+  background: var(--lab-color); border-radius: 2px;
+}
+.lab-check { border-radius: 8px; }
+.lab-check::before {
+  content: '✓'; position: absolute; top: 2px; right: 3px;
+  font-size: 9px; color: rgba(255,255,255,.6);
+}
+.lab-star {
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  border-radius: 0;
+  background: #00B67A;
+}
+.lab-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.lab-text strong { font-family: var(--font-display); font-size: 13px; font-weight: 700; color: var(--color-text); line-height: 1.2; }
+.lab-text span { font-size: 11px; color: var(--color-muted); }

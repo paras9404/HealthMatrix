@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="BioSchwartz Turmeric Curcumin with Bioperine">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#DCFCE7"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#22C55E" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#22C55E" stop-opacity="0.55"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <circle cx="200" cy="200" r="130" fill="url(#accent)" opacity="0.12"/>
+  <g transform="translate(0,-10)"><path d="M120,280 Q120,160 200,120 Q280,160 280,280 Q200,260 120,280 Z" fill="#fff" opacity="0.95"/></g>
+  <rect x="0" y="320" width="400" height="80" fill="rgba(15,23,42,0.92)"/>
+  <text x="200" y="346" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="0.12em" fill="#22C55E" text-transform="uppercase">BIOSCHWARTZ</text>
+  <text x="200" y="372" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="600" fill="#fff"><tspan x="200" dy="0">Turmeric Curcumin with</tspan><tspan x="200" dy="28">Bioperine</tspan></text>
+</svg>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0F766E" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Fallback SEO for crawlers that hit the page before React hydrates.
+         Per-page title/description/canonical/OG/Twitter are owned by react-helmet-async
+         (see src/components/Seo.jsx). Avoid duplicating those tags here — Helmet only
+         manages tags marked with data-rh="true", so any duplicates left below would
+         persist as a second copy in the rendered head. -->
+    <title>HealthMatrix — Compare Supplement Ratings Across Trusted Labs</title>
+    <meta
+      name="description"
+      content="Compare supplement quality ratings from 9 independent labs — Labdoor, ConsumerLab, NSF, USP, Examine, Trustified, Informed Choice, Informed Sport, and Trustpilot. One aggregate score. Zero guesswork."
+    />
+    <meta name="application-name" content="HealthMatrix" />
+    <meta name="apple-mobile-web-app-title" content="HealthMatrix" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="author" content="HealthMatrix" />
+    <meta name="publisher" content="HealthMatrix" />
+
+    <!-- Performance hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <p style="text-align:center;padding:2rem;font-family:sans-serif">
+        HealthMatrix needs JavaScript enabled. Please enable it to compare supplement
+        ratings from independent labs.
+      </p>
+    </noscript>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
