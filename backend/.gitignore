@@ -7,5 +7,4 @@ instance/
 .pytest_cache/
 .coverage
 htmlcov/
-migrations/versions/*.py
-!migrations/versions/.gitkeep
+migrations/versions/__pycache__/
