@@ -11,7 +11,7 @@ export function setToken(token) {
 }
 
 const adminApi = axios.create({
-  baseURL: '/api/admin',
+  baseURL: `${import.meta.env.VITE_API_URL || '/api'}/admin`,
   timeout: 20000,
   headers: { 'Content-Type': 'application/json' },
 })

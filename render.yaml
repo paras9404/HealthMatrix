@@ -1,0 +1,33 @@
+databases:
+  - name: healthmatrix-db
+    plan: free
+    databaseName: healthmatrix
+    user: healthmatrix
+
+services:
+  - type: web
+    name: healthmatrix-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements-prod.txt && flask db upgrade && python seed.py
+    startCommand: gunicorn run:app --bind 0.0.0.0:$PORT --workers 2
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: FLASK_APP
+        value: run.py
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: healthmatrix-db
+          property: connectionURI
+      - key: CORS_ORIGINS
+        value: https://healthmatrix.vercel.app
+      - key: RATELIMIT_ENABLED
+        value: "true"
+      - key: REDIS_URL
+        value: memory://
+      - key: PYTHON_VERSION
+        value: "3.11.9"
