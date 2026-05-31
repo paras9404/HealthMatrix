@@ -1,4 +1,4 @@
-import { getCategoryEmoji, getScoreColor, cleanProductName } from '../utils/format.js'
+import { getCategoryEmoji, getScoreColor, cleanProductName, imageSrc } from '../utils/format.js'
 import './SearchSuggestions.css'
 
 // The backend escapes supplement names before wrapping matches in <mark>, so
@@ -37,7 +37,7 @@ export default function SearchSuggestions({
             onClick={() => onSelect(s)}
           >
             {s.image ? (
-              <img className="suggest-thumb" src={s.image} alt="" loading="lazy" />
+              <img className="suggest-thumb" src={imageSrc(s.image)} alt="" loading="lazy" />
             ) : (
               <span className="suggest-icon">{getCategoryEmoji(s.category?.icon)}</span>
             )}

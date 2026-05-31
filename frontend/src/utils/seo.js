@@ -25,8 +25,11 @@ export function absoluteImage(url) {
   if (url.startsWith('http://') || url.startsWith('https://')) return url
   if (url.startsWith('//')) return `https:${url}`
   if (url.startsWith('/static/')) {
-    const apiBase = (import.meta.env.VITE_API_URL || SITE_URL).replace(/\/$/, '')
-    return `${apiBase}${url}`
+    // Static assets live on the API host, not the SPA host. Strip the trailing
+    // /api so /static/... resolves to the backend root.
+    const raw = import.meta.env.VITE_API_URL || SITE_URL
+    const backendOrigin = raw.replace(/\/api\/?$/, '').replace(/\/$/, '')
+    return `${backendOrigin}${url}`
   }
   return `${SITE_URL}${url.startsWith('/') ? '' : '/'}${url}`
 }

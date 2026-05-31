@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import ScoreRing from './ScoreRing.jsx'
 import { useCompare } from '../hooks/useCompare.jsx'
-import { getCategoryEmoji, getScoreColor, getScoreGrade, cleanProductName } from '../utils/format.js'
+import { getCategoryEmoji, getScoreColor, getScoreGrade, cleanProductName, imageSrc } from '../utils/format.js'
 import './SupplementCard.css'
 
 export default function SupplementCard({ supplement, compact = false }) {
@@ -31,7 +31,7 @@ export default function SupplementCard({ supplement, compact = false }) {
     <Link to={`/supplement/${supplement.slug}`} className={`scard ${compact ? 'scard-compact' : ''}`}>
       <div className="scard-img">
         {supplement.image ? (
-          <img src={supplement.image} alt={`${brandName} ${displayName}`.trim()} loading="lazy" />
+          <img src={imageSrc(supplement.image)} alt={`${brandName} ${displayName}`.trim()} loading="lazy" />
         ) : (
           <span className="scard-img-icon">{getCategoryEmoji(supplement.category?.icon)}</span>
         )}

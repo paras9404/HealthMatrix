@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { imageSrc } from '../utils/format.js'
 import './ImageGallery.css'
 
 const TYPE_LABELS = {
@@ -144,7 +145,7 @@ export default function ImageGallery({ images, fallbackEmoji, alt }) {
                 onClick={() => goTo(i)}
                 title={TYPE_LABELS[img.type] || img.type}
               >
-                <img src={img.url} alt={img.alt || `Thumbnail ${i + 1}`} loading="lazy" />
+                <img src={imageSrc(img.url)} alt={img.alt || `Thumbnail ${i + 1}`} loading="lazy" />
               </button>
             ))}
           </div>
@@ -164,7 +165,7 @@ export default function ImageGallery({ images, fallbackEmoji, alt }) {
         >
           <img
             key={current.url}
-            src={current.url}
+            src={imageSrc(current.url)}
             alt={current.alt || alt || `Image ${active + 1}`}
             className="gallery-img"
             loading="eager"
@@ -308,7 +309,7 @@ function Lightbox({ images, active, onClose, onPrev, onNext, onSelect }) {
         style={{ cursor: scale > 1 ? (dragRef.current ? 'grabbing' : 'grab') : 'zoom-in' }}
       >
         <img
-          src={current.url}
+          src={imageSrc(current.url)}
           alt={current.alt || `Image ${active + 1}`}
           className="lightbox-img"
           style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${scale})` }}
@@ -328,7 +329,7 @@ function Lightbox({ images, active, onClose, onPrev, onNext, onSelect }) {
             onClick={() => onSelect(i)}
             aria-label={`Show image ${i + 1}`}
           >
-            <img src={img.url} alt="" loading="lazy" />
+            <img src={imageSrc(img.url)} alt="" loading="lazy" />
           </button>
         ))}
       </div>

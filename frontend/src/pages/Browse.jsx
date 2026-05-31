@@ -7,7 +7,7 @@ import ScoreRing from '../components/ScoreRing.jsx'
 import { CardSkeleton, EmptyState, ErrorState } from '../components/Loader.jsx'
 import Seo from '../components/Seo.jsx'
 import { useCompare } from '../hooks/useCompare.jsx'
-import { getCategoryEmoji, getScoreColor, getScoreGrade, cleanProductName } from '../utils/format.js'
+import { getCategoryEmoji, getScoreColor, getScoreGrade, cleanProductName, imageSrc } from '../utils/format.js'
 import { buildBreadcrumbJsonLd, buildItemListJsonLd, buildCollectionPageJsonLd } from '../utils/seo.js'
 import './Browse.css'
 
@@ -531,7 +531,7 @@ function ListRow({ supplement: s }) {
     <Link to={`/supplement/${s.slug}`} className="list-row">
       <div className="list-icon">
         {s.image ? (
-          <img src={s.image} alt={`${brandName} ${displayName}`.trim()} loading="lazy" />
+          <img src={imageSrc(s.image)} alt={`${brandName} ${displayName}`.trim()} loading="lazy" />
         ) : (
           <span className="list-icon-emoji">{getCategoryEmoji(s.category?.icon)}</span>
         )}

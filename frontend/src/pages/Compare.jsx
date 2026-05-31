@@ -6,7 +6,7 @@ import { trackEvent } from '../hooks/useTracker.js'
 import ScoreRing from '../components/ScoreRing.jsx'
 import { Spinner, EmptyState } from '../components/Loader.jsx'
 import Seo from '../components/Seo.jsx'
-import { getCategoryEmoji, getScoreColor, getScoreGrade, cleanProductName } from '../utils/format.js'
+import { getCategoryEmoji, getScoreColor, getScoreGrade, cleanProductName, imageSrc } from '../utils/format.js'
 import './Compare.css'
 
 export default function Compare() {
@@ -125,7 +125,7 @@ export default function Compare() {
                       <Link to={`/supplement/${s.slug}`} className="ct-product-link">
                         <div className="ct-img">
                           {s.image ? (
-                            <img src={s.image} alt={s.name} />
+                            <img src={imageSrc(s.image)} alt={s.name} />
                           ) : (
                             <span>{getCategoryEmoji(s.category?.icon)}</span>
                           )}

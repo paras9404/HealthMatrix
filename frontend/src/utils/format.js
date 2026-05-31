@@ -1,3 +1,24 @@
+// Backend origin for static assets. VITE_API_URL is the API base (e.g.
+// "https://healthmatrix-api.onrender.com/api"); strip the trailing /api so
+// /static/... files resolve to the right host. In dev, fall back to the
+// current origin so the Vite proxy handles it.
+const BACKEND_ORIGIN = (() => {
+  const raw = import.meta.env.VITE_API_URL || ''
+  if (!raw) return ''
+  return raw.replace(/\/api\/?$/, '').replace(/\/$/, '')
+})()
+
+// Resolve a possibly-relative image path to a full URL that works on prod
+// (where the API lives on a different origin than the SPA). Absolute URLs
+// and data: URIs pass through unchanged.
+export function imageSrc(path) {
+  if (!path) return ''
+  if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) return path
+  if (path.startsWith('//')) return `https:${path}`
+  if (!BACKEND_ORIGIN) return path // dev: let the Vite proxy handle it
+  return `${BACKEND_ORIGIN}${path.startsWith('/') ? '' : '/'}${path}`
+}
+
 export function getScoreColor(score) {
   if (score == null) return 'var(--color-muted)'
   if (score >= 90) return 'var(--color-success)'

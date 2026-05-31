@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import ScoreRing from './ScoreRing.jsx'
-import { getCategoryEmoji, getScoreColor, getScoreGrade, cleanProductName, shortenName } from '../utils/format.js'
+import { getCategoryEmoji, getScoreColor, getScoreGrade, cleanProductName, shortenName, imageSrc } from '../utils/format.js'
 import './HeroDashboard.css'
 
 // Map a 0-100 normalized score to the lab's own framing for the tickers —
@@ -62,7 +62,7 @@ export default function HeroDashboard({ featured = [] }) {
         <div className="dash-card-head">
           <div className="dash-thumb">
             {top.image ? (
-              <img src={top.image} alt={displayName} loading="lazy" />
+              <img src={imageSrc(top.image)} alt={displayName} loading="lazy" />
             ) : (
               <span>{getCategoryEmoji(cat?.icon)}</span>
             )}
