@@ -1,0 +1,20 @@
+name: Keep Render backend warm
+
+# Pings the Render free-tier backend every 14 minutes so it never goes to
+# sleep (Render sleeps services after 15 minutes idle, and the cold start
+# takes 30–50 seconds — long enough to time the SPA out).
+on:
+  schedule:
+    - cron: "*/14 * * * *"
+  workflow_dispatch: # allows manual run from the Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Ping /api/health
+        run: |
+          curl --fail --silent --show-error --max-time 90 \
+               -o /dev/null -w "HTTP %{http_code} in %{time_total}s\n" \
+               https://healthmatrix-api.onrender.com/api/health
