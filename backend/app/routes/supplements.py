@@ -1,6 +1,6 @@
 import re
 
-from flask import Blueprint, request, jsonify, abort
+from flask import Blueprint, request, jsonify, abort, current_app
 from sqlalchemy import or_, desc, asc, func, exists, and_
 from sqlalchemy.orm import aliased
 
@@ -325,12 +325,14 @@ def search_suggest():
         try:
             image = s.primary_image
         except Exception:
+            current_app.logger.exception("primary_image failed for supplement %s", s.id)
             image = s.image_url or (
                 f"/static/images/supplements/{s.image_path}" if s.image_path else None
             )
         try:
             category = s.category.to_dict() if s.category else None
         except Exception:
+            current_app.logger.exception("category serialization failed for supplement %s", s.id)
             category = None
         return {
             "id": s.id,
