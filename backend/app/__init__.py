@@ -109,6 +109,10 @@ def create_app(config_class=None):
     def handle_unexpected(e):
         if app.debug:
             raise e
+        # Log the full traceback so we can debug 500s from the Render log viewer.
+        # Without this, every unexpected error is silent except for an opaque
+        # access-log 500 entry.
+        app.logger.exception("Unhandled exception in request")
         return jsonify({"error": "Internal Server Error", "message": "Something went wrong"}), 500
 
     from . import models  # noqa: F401  (register models for Alembic autogenerate)

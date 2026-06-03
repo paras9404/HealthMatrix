@@ -319,18 +319,28 @@ def search_suggest():
     items = (_visible_supplements_query()
              .filter(or_(Supplement.name.ilike(like), Brand.name.ilike(like), group_name_match))
              .limit(8).all())
-    return jsonify({"items": [
-        {
+
+    def _serialize(s):
+        # Defensive: any single field failing shouldn't 500 the whole suggest.
+        try:
+            image = s.primary_image
+        except Exception:
+            image = s.image_url or (
+                f"/static/images/supplements/{s.image_path}" if s.image_path else None
+            )
+        try:
+            category = s.category.to_dict() if s.category else None
+        except Exception:
+            category = None
+        return {
             "id": s.id,
             # When the supplement is a group primary, show the canonical group name
             # in the typeahead so users see "Whey Protein XL" not the long variant.
             "name": (s.product_group.name if s.product_group else s.name),
             "brand": s.brand.name if s.brand else None,
             "slug": s.slug,
-            # Image + category drive the thumbnail in the typeahead. Without
-            # these the frontend falls back to a generic category emoji.
-            "image": s.primary_image,
-            "category": s.category.to_dict() if s.category else None,
+            "image": image,
+            "category": category,
         }
-        for s in items
-    ]})
+
+    return jsonify({"items": [_serialize(s) for s in items]})
