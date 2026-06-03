@@ -320,29 +320,18 @@ def search_suggest():
              .filter(or_(Supplement.name.ilike(like), Brand.name.ilike(like), group_name_match))
              .limit(8).all())
 
-    def _serialize(s):
-        # Defensive: any single field failing shouldn't 500 the whole suggest.
-        try:
-            image = s.primary_image
-        except Exception:
-            current_app.logger.exception("primary_image failed for supplement %s", s.id)
-            image = s.image_url or (
-                f"/static/images/supplements/{s.image_path}" if s.image_path else None
-            )
-        try:
-            category = s.category.to_dict() if s.category else None
-        except Exception:
-            current_app.logger.exception("category serialization failed for supplement %s", s.id)
-            category = None
-        return {
+    return jsonify({"items": [
+        {
             "id": s.id,
             # When the supplement is a group primary, show the canonical group name
             # in the typeahead so users see "Whey Protein XL" not the long variant.
             "name": (s.product_group.name if s.product_group else s.name),
             "brand": s.brand.name if s.brand else None,
             "slug": s.slug,
-            "image": image,
-            "category": category,
+            # `image` is a model @property that resolves gallery → static → url.
+            # Category drives the fallback emoji when no image is set.
+            "image": s.image,
+            "category": s.category.to_dict() if s.category else None,
         }
-
-    return jsonify({"items": [_serialize(s) for s in items]})
+        for s in items
+    ]})
