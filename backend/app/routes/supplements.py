@@ -327,6 +327,10 @@ def search_suggest():
             "name": (s.product_group.name if s.product_group else s.name),
             "brand": s.brand.name if s.brand else None,
             "slug": s.slug,
+            # Image + category drive the thumbnail in the typeahead. Without
+            # these the frontend falls back to a generic category emoji.
+            "image": s.primary_image,
+            "category": s.category.to_dict() if s.category else None,
         }
         for s in items
     ]})
