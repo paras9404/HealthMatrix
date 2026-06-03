@@ -46,30 +46,21 @@ export default function Home() {
   const search = useSearchSuggestions()
 
   useEffect(() => {
+    // Ask /featured to embed ratings so the hero dashboard's lab tickers can
+    // render in the first paint — saves a chained per-slug detail fetch.
     Promise.all([
-      supplementsApi.featured(6),
+      supplementsApi.featured(6, { includeRatings: true }),
       categoriesApi.list(),
       sourcesApi.list({ counts: true }),
       statsApi.get().catch(() => null),
       supplementsApi.list({ sort: 'top', per_page: 9 }).catch(() => ({ items: [] })),
     ])
       .then(([f, c, s, st, top]) => {
-        const items = f.items || []
-        setFeatured(items)
+        setFeatured(f.items || [])
         setCategories(c.items || [])
         setSources(s.items || [])
         setStats(st)
         setTopRated(top.items || [])
-        // The /featured endpoint returns lightweight product cards (no ratings).
-        // The hero dashboard wants the top product's lab ratings to show real
-        // lab names in the floating tickers — fetch the full detail and merge.
-        if (items[0]?.slug) {
-          supplementsApi.get(items[0].slug)
-            .then((full) => {
-              setFeatured((prev) => prev.length === 0 ? prev : [{ ...prev[0], ratings: full.ratings || [] }, ...prev.slice(1)])
-            })
-            .catch(() => { /* tickers fall back to none — non-fatal */ })
-        }
       })
       .finally(() => setLoading(false))
   }, [])

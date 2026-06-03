@@ -17,23 +17,41 @@ api.interceptors.response.use(
   }
 )
 
+// In-flight GET coalescing: when two components mount on the same page and both
+// fire the same GET (e.g. Home + Footer both calling /sources?counts=true), share
+// one HTTP request. The cache is keyed by URL + params and only lives until the
+// request settles — there's no stale-data risk because subsequent component
+// mounts re-issue fresh GETs.
+const inflight = new Map()
+function dedupeGet(url, params) {
+  const key = `${url}?${new URLSearchParams(params || {}).toString()}`
+  const hit = inflight.get(key)
+  if (hit) return hit
+  const promise = api.get(url, { params }).then((r) => r.data).finally(() => inflight.delete(key))
+  inflight.set(key, promise)
+  return promise
+}
+
 export const supplementsApi = {
   list: (params = {}) => {
     // Drop empty-string params so the URL is clean
     const cleaned = Object.fromEntries(Object.entries(params).filter(([, v]) => v !== '' && v != null))
-    return api.get('/supplements', { params: cleaned }).then((r) => r.data)
+    return dedupeGet('/supplements', cleaned)
   },
-  get: (slug) => api.get(`/supplements/${slug}`).then((r) => r.data),
-  featured: (limit = 6) => api.get('/supplements/featured', { params: { limit } }).then((r) => r.data),
+  get: (slug) => dedupeGet(`/supplements/${slug}`),
+  featured: (limit = 6, { includeRatings = false } = {}) => dedupeGet(
+    '/supplements/featured',
+    includeRatings ? { limit, include_ratings: true } : { limit },
+  ),
   suggest: (q) => api.get('/supplements/search/suggest', { params: { q } }).then((r) => r.data),
 }
 
 export const categoriesApi = {
-  list: () => api.get('/categories').then((r) => r.data),
+  list: () => dedupeGet('/categories'),
 }
 
 export const sourcesApi = {
-  list: ({ counts = false } = {}) => api.get('/sources', { params: counts ? { counts: true } : {} }).then((r) => r.data),
+  list: ({ counts = false } = {}) => dedupeGet('/sources', counts ? { counts: true } : {}),
 }
 
 export const compareApi = {
@@ -41,7 +59,7 @@ export const compareApi = {
 }
 
 export const statsApi = {
-  get: () => api.get('/stats').then((r) => r.data),
+  get: () => dedupeGet('/stats'),
 }
 
 export default api

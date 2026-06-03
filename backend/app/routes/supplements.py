@@ -264,8 +264,12 @@ def get_supplement(slug):
 @supplements_bp.route("/featured", methods=["GET"])
 def featured():
     """Top-rated supplements: only products with ≥1 rating from an active source,
-    ranked by their average normalized score (computed in SQL). No 'Not yet rated' cards."""
+    ranked by their average normalized score (computed in SQL). No 'Not yet rated' cards.
+
+    `include_ratings=true` embeds each card's lab breakdown — used by the home page
+    hero so it doesn't have to follow up with a per-slug detail fetch."""
     limit = min(int(request.args.get("limit", 6)), 20)
+    include_ratings = request.args.get("include_ratings", "").lower() == "true"
     from sqlalchemy import func
     from ..models import Rating
 
@@ -282,7 +286,7 @@ def featured():
         .limit(limit)
         .all()
     )
-    return jsonify({"items": [s.to_public_dict() for s in rows]})
+    return jsonify({"items": [s.to_public_dict(include_ratings=include_ratings) for s in rows]})
 
 
 @supplements_bp.route("/search/suggest", methods=["GET"])
