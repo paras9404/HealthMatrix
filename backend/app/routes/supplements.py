@@ -7,6 +7,7 @@ from sqlalchemy.orm import aliased
 from ..extensions import db
 from ..models import Supplement, Category, Brand, Source, Rating, SupplementAlias, ProductGroup
 from ..services import search_index
+from ..utils.cache import cached_view
 
 
 def _parse_price(amazon_data) -> float | None:
@@ -262,6 +263,7 @@ def get_supplement(slug):
 
 
 @supplements_bp.route("/featured", methods=["GET"])
+@cached_view(seconds=60)
 def featured():
     """Top-rated supplements: only products with ≥1 rating from an active source,
     ranked by their average normalized score (computed in SQL). No 'Not yet rated' cards.

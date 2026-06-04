@@ -1,11 +1,13 @@
 from flask import Blueprint, jsonify, abort
 
 from ..models import Category
+from ..utils.cache import cached_view
 
 categories_bp = Blueprint("categories", __name__)
 
 
 @categories_bp.route("", methods=["GET"])
+@cached_view(seconds=300)
 def list_categories():
     cats = (Category.query
             .filter(Category.is_active.is_(True))

@@ -3,11 +3,13 @@ from sqlalchemy import distinct, func
 
 from ..extensions import db
 from ..models import Supplement, Source, Brand, Category, Rating
+from ..utils.cache import cached_view
 
 stats_bp = Blueprint("stats", __name__)
 
 
 @stats_bp.route("", methods=["GET"])
+@cached_view(seconds=60)
 def site_stats():
     """Live counts used by the homepage hero. Everything respects is_active flags.
 
